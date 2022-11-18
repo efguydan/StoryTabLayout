@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".pagerfragment.PagerFragment">
+
+   <View
+       android:id="@+id/view"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="150sp"
+        android:gravity="center"
+        tools:text="A"
+        />
+
+</FrameLayout>

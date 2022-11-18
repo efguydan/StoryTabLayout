@@ -7,4 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="lightPeriwinkle">#BCC4DB</color>
+    <color name="blackShadows">#C0A9B0</color>
+    <color name="glaucous">#7880B5</color>
+    <color name="glaucous2">#6987C9</color>
+    <color name="aero">#6BBAEC</color>
 </resources>

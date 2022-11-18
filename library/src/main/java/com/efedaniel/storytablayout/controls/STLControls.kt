@@ -1,4 +1,4 @@
-package com.efedaniel.storytablayout
+package com.efedaniel.storytablayout.controls
 
 interface STLControls {
 
