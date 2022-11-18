@@ -1,4 +1,4 @@
-package com.efedaniel.storytablayout.views.automaticprogressbar
+package com.efedaniel.storytablayout.automaticprogressbar
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.efedaniel.storytablayout.databinding.LayoutAutomaticProgressBarBinding
 
-class AutomaticProgressBar(
+internal class AutomaticProgressBar(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -25,6 +25,8 @@ class AutomaticProgressBar(
         ValueAnimator.ofInt(0, binding.linearProgressIndicator.max)
     }
 
+    private var animationEndListener: (() -> Unit)? = null
+
     init {
         setupAnimator()
     }
@@ -32,14 +34,14 @@ class AutomaticProgressBar(
     private fun setupAnimator() {
         animator.addUpdateListener(this)
         animator.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator?) {
-                // TODO On Animation End
+            override fun onAnimationEnd(animation: Animator) {
+                animationEndListener?.invoke()
             }
         })
     }
 
-    override fun onAnimationUpdate(animation: ValueAnimator?) {
-        (animation?.animatedValue as? Int?)?.let {
+    override fun onAnimationUpdate(animation: ValueAnimator) {
+        (animation.animatedValue as? Int?)?.let {
             binding.linearProgressIndicator.progress = it
         }
     }

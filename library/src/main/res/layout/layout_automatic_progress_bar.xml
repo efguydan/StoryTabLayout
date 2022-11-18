@@ -7,8 +7,9 @@
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/linear_progress_indicator"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:max="5000"
         />
 
 </FrameLayout>
