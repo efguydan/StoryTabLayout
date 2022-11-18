@@ -1,6 +1,6 @@
 package com.efedaniel.storytablayout
 
-interface StoryTabLayoutControls {
+interface STLControls {
 
     fun start()
 
