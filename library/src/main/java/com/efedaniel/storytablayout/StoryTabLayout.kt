@@ -3,10 +3,11 @@ package com.efedaniel.storytablayout
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.LinearLayout
-import androidx.viewpager.widget.ViewPager
-import androidx.viewpager2.widget.ViewPager2
+import androidx.core.view.updateLayoutParams
 import com.efedaniel.storytablayout.setup.STLSetup
 import com.efedaniel.storytablayout.setup.SetupType
+import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBar
+import com.efedaniel.storytablayout.views.divider.Divider
 
 class StoryTabLayout @JvmOverloads constructor(
     context: Context,
@@ -14,10 +15,33 @@ class StoryTabLayout @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr), STLSetup {
 
-    private var owner: SetupType? = null
+    private var setupType: SetupType? = null
+
+    private val numberOfTabs: Int
+        get() = setupType?.getNumberOfTabs() ?: 0
+
+    init {
+        setupLayout()
+    }
+
+    private fun setupLayout() {
+        dividerDrawable = Divider(sizeInDp = 4)
+        showDividers = SHOW_DIVIDER_MIDDLE
+    }
 
     override fun setup(type: SetupType) {
-        owner = type
-        invalidate()
+        setupType = type
+        setupProgressBars()
+    }
+
+    private fun setupProgressBars() {
+        dividerPadding
+        repeat(numberOfTabs) {
+            val progressBar = AutomaticProgressBar(context)
+            addView(progressBar)
+            progressBar.updateLayoutParams<LayoutParams> {
+                weight = 1f
+            }
+        }
     }
 }

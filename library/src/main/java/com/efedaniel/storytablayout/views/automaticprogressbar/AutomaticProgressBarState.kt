@@ -1,4 +1,4 @@
-package com.efedaniel.storytablayout.automaticprogressbar
+package com.efedaniel.storytablayout.views.automaticprogressbar
 
 internal enum class AutomaticProgressBarState {
     UNFILLED,

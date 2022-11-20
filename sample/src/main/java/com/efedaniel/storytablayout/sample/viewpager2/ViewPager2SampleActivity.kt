@@ -1,8 +1,7 @@
 package com.efedaniel.storytablayout.sample.viewpager2
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.efedaniel.storytablayout.sample.R
+import androidx.appcompat.app.AppCompatActivity
 import com.efedaniel.storytablayout.sample.databinding.ActivityViewPager2SampleBinding
 
 class ViewPager2SampleActivity : AppCompatActivity() {
@@ -19,5 +18,6 @@ class ViewPager2SampleActivity : AppCompatActivity() {
 
     private fun setupViewPager2() {
         binding.viewPager.adapter = ViewPager2Adapter(this)
+        binding.storyTabLayout.setupWithViewPager2(binding.viewPager)
     }
 }

@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun openActivity(destination: Class<*>) {
+    private fun openActivity(destination: Class<*>) {
         Intent(this, destination).also {
             startActivity(it)
         }
