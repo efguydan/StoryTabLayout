@@ -19,5 +19,6 @@ class ViewPager2SampleActivity : AppCompatActivity() {
     private fun setupViewPager2() {
         binding.viewPager.adapter = ViewPager2Adapter(this)
         binding.storyTabLayout.setupWithViewPager2(binding.viewPager)
+        binding.storyTabLayout.start()
     }
 }

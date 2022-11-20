@@ -4,6 +4,11 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
+import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.FILLED
+import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.PAUSED
+import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.RESUMED
+import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.STARTED
+import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.UNFILLED
 import com.google.android.material.progressindicator.LinearProgressIndicator
 
 internal class AutomaticProgressBar @JvmOverloads constructor(
@@ -15,8 +20,20 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
 
     private val progressBar = LinearProgressIndicator(context, attrs, defStyleAttr)
 
+    var state: AutomaticProgressBarState = UNFILLED
+        set(value) {
+            field = value
+            when(value) {
+                UNFILLED -> unfillProgressBar()
+                STARTED -> startProgressBar()
+                PAUSED -> pauseProgressBar()
+                RESUMED -> resumeProgressBar()
+                FILLED -> fillProgressBar()
+            }
+        }
+
     private val animator by lazy {
-        ValueAnimator.ofInt(0, progressBar.max)
+        ValueAnimator.ofInt(0, totalDuration)
     }
 
     private var animationEndListener: (() -> Unit)? = null
@@ -27,11 +44,12 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
     }
 
     private fun setupProgressBar() {
-        addView(progressBar)
         progressBar.max = totalDuration
+        addView(progressBar)
     }
 
     private fun setupAnimator() {
+        animator.duration = totalDuration.toLong()
         animator.addUpdateListener(this)
     }
 
@@ -44,5 +62,29 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
     override fun onAnimationEnd() {
         super.onAnimationEnd()
         animationEndListener?.invoke()
+    }
+
+    private fun unfillProgressBar() {
+        progressBar.progress = 0
+        animator.cancel()
+    }
+
+    private fun startProgressBar() {
+        progressBar.progress = 0
+        animator.start()
+    }
+
+    private fun pauseProgressBar() {
+        animator.pause()
+    }
+
+    private fun resumeProgressBar() {
+        animator.resume()
+    }
+
+    private fun fillProgressBar() {
+        animator.cancel()
+        progressBar.progress = progressBar.max
+        onAnimationEnd()
     }
 }

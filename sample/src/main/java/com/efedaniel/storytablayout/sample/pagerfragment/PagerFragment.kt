@@ -1,13 +1,12 @@
 package com.efedaniel.storytablayout.sample.pagerfragment
 
+import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.efedaniel.storytablayout.sample.R
+import androidx.fragment.app.Fragment
 import com.efedaniel.storytablayout.sample.databinding.FragmentPagerBinding
-import com.efedaniel.storytablayout.sample.exts.getRandomColor
 
 class PagerFragment : Fragment() {
 
@@ -36,8 +35,6 @@ class PagerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.textView.text = arguments?.getInt(NUMBER_KEY)?.toString()
-        binding.view.setBackgroundColor(getRandomColor())
+        binding.view.setBackgroundColor(Color.WHITE)
     }
-
-
 }

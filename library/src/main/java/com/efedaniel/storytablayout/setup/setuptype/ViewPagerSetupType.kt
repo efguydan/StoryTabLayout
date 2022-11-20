@@ -1,4 +1,4 @@
-package com.efedaniel.storytablayout.setup
+package com.efedaniel.storytablayout.setup.setuptype
 
 import androidx.viewpager.widget.ViewPager
 
