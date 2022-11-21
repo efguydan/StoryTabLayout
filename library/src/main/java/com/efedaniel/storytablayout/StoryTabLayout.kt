@@ -9,6 +9,7 @@ import com.efedaniel.storytablayout.controls.STLControls
 import com.efedaniel.storytablayout.setup.STLSetup
 import com.efedaniel.storytablayout.setup.setuptype.SetupType
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBar
+import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarListener
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.FILLED
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.STARTED
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.UNFILLED
@@ -18,7 +19,7 @@ class StoryTabLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr), STLSetup, STLControls {
+) : LinearLayout(context, attrs, defStyleAttr), AutomaticProgressBarListener, STLSetup, STLControls {
 
     // region Internal Variables
 
@@ -47,6 +48,7 @@ class StoryTabLayout @JvmOverloads constructor(
     // region Setup
 
     override fun setup(type: SetupType) {
+        type.onPageSelected = ::onNewPageSelected
         setupType = type
         setupProgressBars()
     }
@@ -57,7 +59,7 @@ class StoryTabLayout @JvmOverloads constructor(
     }
 
     private fun addProgressBar() {
-        val progressBar = AutomaticProgressBar(context)
+        val progressBar = AutomaticProgressBar(context, listener = this)
         addView(progressBar)
         progressBar.updateLayoutParams<LayoutParams> { weight = 1f }
     }
@@ -88,6 +90,14 @@ class StoryTabLayout @JvmOverloads constructor(
 
     override fun jumpToPage(index: Int): Boolean {
         TODO("Not yet implemented")
+    }
+
+    // endregion
+
+    // region Automatic Progress Bar Listener
+
+    override fun onBarFilled() {
+        setupType?.onCurrentBarFilled(currentPage + 1)
     }
 
     // endregion

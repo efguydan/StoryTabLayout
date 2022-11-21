@@ -11,5 +11,5 @@ class ViewPager2Adapter(
 
     override fun getItemCount() = numItems
 
-    override fun createFragment(position: Int) = PagerFragment.newInstance(position)
+    override fun createFragment(position: Int) = PagerFragment.newInstance(position+1)
 }

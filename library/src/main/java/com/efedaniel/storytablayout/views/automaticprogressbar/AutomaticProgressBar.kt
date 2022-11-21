@@ -4,6 +4,7 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
+import androidx.core.animation.doOnEnd
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.FILLED
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.PAUSED
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.RESUMED
@@ -15,7 +16,8 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
-    private val totalDuration: Int = 5000
+    private val listener: AutomaticProgressBarListener? = null,
+    private val totalDuration: Int = 5000,
 ) : FrameLayout(context, attrs, defStyleAttr), ValueAnimator.AnimatorUpdateListener {
 
     private val progressBar = LinearProgressIndicator(context, attrs, defStyleAttr)
@@ -36,8 +38,6 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
         ValueAnimator.ofInt(0, totalDuration)
     }
 
-    private var animationEndListener: (() -> Unit)? = null
-
     init {
         setupProgressBar()
         setupAnimator()
@@ -51,17 +51,15 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
     private fun setupAnimator() {
         animator.duration = totalDuration.toLong()
         animator.addUpdateListener(this)
+        animator.doOnEnd {
+            listener?.onBarFilled()
+        }
     }
 
     override fun onAnimationUpdate(animation: ValueAnimator) {
         (animation.animatedValue as? Int?)?.let {
             progressBar.progress = it
         }
-    }
-
-    override fun onAnimationEnd() {
-        super.onAnimationEnd()
-        animationEndListener?.invoke()
     }
 
     private fun unfillProgressBar() {
@@ -85,6 +83,5 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
     private fun fillProgressBar() {
         animator.cancel()
         progressBar.progress = progressBar.max
-        onAnimationEnd()
     }
 }
