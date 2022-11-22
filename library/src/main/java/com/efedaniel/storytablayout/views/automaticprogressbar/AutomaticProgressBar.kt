@@ -5,6 +5,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.core.animation.doOnEnd
+import com.efedaniel.storytablayout.extensions.dpToPixels
+import com.efedaniel.storytablayout.extensions.isFilled
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.FILLED
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.PAUSED
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.RESUMED
@@ -17,7 +19,8 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
     private val listener: AutomaticProgressBarListener? = null,
-    private val totalDuration: Int = 5000,
+    private val totalDuration: Int = 2000,
+    private val barCornerRadius: Int = 4,
 ) : FrameLayout(context, attrs, defStyleAttr), ValueAnimator.AnimatorUpdateListener {
 
     private val progressBar = LinearProgressIndicator(context, attrs, defStyleAttr)
@@ -45,6 +48,7 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
 
     private fun setupProgressBar() {
         progressBar.max = totalDuration
+        progressBar.trackCornerRadius = barCornerRadius.dpToPixels()
         addView(progressBar)
     }
 
@@ -52,7 +56,7 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
         animator.duration = totalDuration.toLong()
         animator.addUpdateListener(this)
         animator.doOnEnd {
-            listener?.onBarFilled()
+            if (progressBar.isFilled()) listener?.onBarFilled()
         }
     }
 
