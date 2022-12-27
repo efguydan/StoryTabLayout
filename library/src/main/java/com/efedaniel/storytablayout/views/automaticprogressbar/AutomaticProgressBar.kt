@@ -2,11 +2,11 @@ package com.efedaniel.storytablayout.views.automaticprogressbar
 
 import android.animation.ValueAnimator
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
 import android.widget.FrameLayout
-import androidx.annotation.ColorRes
+import androidx.annotation.ColorInt
 import androidx.core.animation.doOnEnd
-import androidx.core.content.ContextCompat
 import com.efedaniel.storytablayout.extensions.dpToPixels
 import com.efedaniel.storytablayout.extensions.isFilled
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.FILLED
@@ -15,7 +15,6 @@ import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgress
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.STARTED
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.UNFILLED
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import kotlin.time.toDuration
 
 internal class AutomaticProgressBar @JvmOverloads constructor(
     context: Context,
@@ -24,8 +23,8 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
     private val listener: AutomaticProgressBarListener? = null,
     private val totalDuration: Int,
     private val cornerRadius: Int,
-    @ColorRes private val trackColor: Int? = null,
-    @ColorRes private val indicatorColor: Int? = null
+    @ColorInt private val trackColor: Int? = null,
+    @ColorInt private val indicatorColor: Int? = null
 ) : FrameLayout(context, attrs, defStyleAttr), ValueAnimator.AnimatorUpdateListener {
 
     private companion object {
@@ -45,6 +44,8 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
                 FILLED -> fillProgressBar()
             }
         }
+
+    var animateSnaps: Boolean = false
 
     private val animator by lazy {
         ValueAnimator.ofInt(0, ANIMATOR_MAX_VALUE)
@@ -79,7 +80,11 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
     }
 
     private fun unFillProgressBar() {
-        progressBar.progress = 0
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            progressBar.setProgress(0, animateSnaps)
+        } else {
+            progressBar.progress = 0
+        }
         animator.cancel()
     }
 
@@ -98,7 +103,11 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
 
     private fun fillProgressBar() {
         animator.cancel()
-        progressBar.progress = progressBar.max
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            progressBar.setProgress(progressBar.max, animateSnaps)
+        } else {
+            progressBar.progress = progressBar.max
+        }
     }
 
     fun setCornerRadius(cornerRadius: Int) {
@@ -110,11 +119,11 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
         animator.duration = duration.toLong()
     }
 
-    fun setBarTrackColor(barTrackColor: Int?) {
-        barTrackColor?.let { progressBar.trackColor = ContextCompat.getColor(context, it) }
+    fun setBarTrackColor(@ColorInt barTrackColor: Int?) {
+        barTrackColor?.let { progressBar.trackColor = it }
     }
 
-    fun setBarIndicatorColor(barIndicatorColor: Int?) {
-        barIndicatorColor?.let { progressBar.setIndicatorColor(ContextCompat.getColor(context, it))}
+    fun setBarIndicatorColor(@ColorInt barIndicatorColor: Int?) {
+        barIndicatorColor?.let { progressBar.setIndicatorColor(it)}
     }
 }

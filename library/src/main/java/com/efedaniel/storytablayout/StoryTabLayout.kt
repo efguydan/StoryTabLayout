@@ -3,6 +3,7 @@ package com.efedaniel.storytablayout
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.LinearLayout
+import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.core.view.children
 import androidx.core.view.updateLayoutParams
@@ -41,15 +42,20 @@ class StoryTabLayout @JvmOverloads constructor(
             field = value
             updateBarDuration()
         }
-    @ColorRes var barTrackColor: Int? = null
+    @ColorInt var barTrackColor: Int? = null
         set(value) {
             field = value
             updateBarTrackColor()
         }
-    @ColorRes var barIndicatorColor: Int? = null
+    @ColorInt var barIndicatorColor: Int? = null
         set(value) {
             field = value
             updateBarIndicatorColor()
+        }
+    var animateBarSnaps: Boolean = false
+        set(value) {
+            field = value
+            updateBarAnimateSnaps()
         }
 
     // endregion
@@ -99,6 +105,7 @@ class StoryTabLayout @JvmOverloads constructor(
             trackColor = barTrackColor,
             indicatorColor = barIndicatorColor
         )
+        progressBar.animateSnaps = animateBarSnaps
         addView(progressBar)
         progressBar.updateLayoutParams<LayoutParams> { weight = 1f }
     }
@@ -183,5 +190,10 @@ class StoryTabLayout @JvmOverloads constructor(
         }
     }
 
+    private fun updateBarAnimateSnaps() {
+        children.map { it as? AutomaticProgressBar? }.forEach {
+            it?.animateSnaps = animateBarSnaps
+        }
+    }
     // endregion
 }
