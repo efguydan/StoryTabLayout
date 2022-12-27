@@ -4,7 +4,9 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
+import androidx.annotation.ColorRes
 import androidx.core.animation.doOnEnd
+import androidx.core.content.ContextCompat
 import com.efedaniel.storytablayout.extensions.dpToPixels
 import com.efedaniel.storytablayout.extensions.isFilled
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.FILLED
@@ -19,8 +21,10 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
     private val listener: AutomaticProgressBarListener? = null,
-    private val totalDuration: Int = 2000,
-    private val barCornerRadius: Int = 4,
+    private val totalDuration: Int,
+    private val cornerRadius: Int,
+    @ColorRes private val trackColor: Int? = null,
+    @ColorRes private val indicatorColor: Int? = null
 ) : FrameLayout(context, attrs, defStyleAttr), ValueAnimator.AnimatorUpdateListener {
 
     private val progressBar = LinearProgressIndicator(context, attrs, defStyleAttr)
@@ -29,7 +33,7 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
         set(value) {
             field = value
             when(value) {
-                UNFILLED -> unfillProgressBar()
+                UNFILLED -> unFillProgressBar()
                 STARTED -> startProgressBar()
                 PAUSED -> pauseProgressBar()
                 RESUMED -> resumeProgressBar()
@@ -48,7 +52,9 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
 
     private fun setupProgressBar() {
         progressBar.max = totalDuration
-        progressBar.trackCornerRadius = barCornerRadius.dpToPixels()
+        progressBar.trackCornerRadius = cornerRadius.dpToPixels()
+        trackColor?.let { progressBar.trackColor = ContextCompat.getColor(context, it) }
+        indicatorColor?.let { progressBar.setIndicatorColor(ContextCompat.getColor(context, it))}
         addView(progressBar)
     }
 
@@ -66,7 +72,7 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
         }
     }
 
-    private fun unfillProgressBar() {
+    private fun unFillProgressBar() {
         progressBar.progress = 0
         animator.cancel()
     }

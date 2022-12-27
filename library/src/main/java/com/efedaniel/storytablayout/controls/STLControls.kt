@@ -8,9 +8,7 @@ interface STLControls {
 
     fun stop()
 
-    fun restart()
-
     fun restartCurrentTab()
 
-    fun jumpToPage(index: Int): Boolean
+    fun jumpToPage(index: Int)
 }
