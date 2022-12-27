@@ -24,18 +24,33 @@ class StoryTabLayout @JvmOverloads constructor(
     defStyleAttr: Int = 0,
 ) : LinearLayout(context, attrs, defStyleAttr), AutomaticProgressBarListener, STLSetup, STLControls {
 
-    // private val exposedVariables
+    // region exposedVariables
 
     var barSpacing: Int = Defaults.TabLayout.BAR_SPACING
         set(value) {
             field = value
-            setLayoutBarSpacing()
+            updateLayoutBarSpacing()
         }
-
-    val barCornerRadius: Int = Defaults.Bar.CORNER_RADIUS
-    val barDuration: Int = Defaults.Bar.DURATION
-    @ColorRes val barTrackColor: Int? = null
-    @ColorRes val barFillerColor: Int? = null
+    var barCornerRadius: Int = Defaults.Bar.CORNER_RADIUS
+        set(value) {
+            field = value
+            updateBarCornerRadius()
+        }
+    var barDuration: Int = Defaults.Bar.DURATION
+        set(value) {
+            field = value
+            updateBarDuration()
+        }
+    @ColorRes var barTrackColor: Int? = null
+        set(value) {
+            field = value
+            updateBarTrackColor()
+        }
+    @ColorRes var barIndicatorColor: Int? = null
+        set(value) {
+            field = value
+            updateBarIndicatorColor()
+        }
 
     // endregion
 
@@ -57,7 +72,7 @@ class StoryTabLayout @JvmOverloads constructor(
     }
 
     private fun setupLayout() {
-        setLayoutBarSpacing()
+        updateLayoutBarSpacing()
     }
 
     // endregion
@@ -81,6 +96,8 @@ class StoryTabLayout @JvmOverloads constructor(
             listener = this,
             totalDuration = barDuration,
             cornerRadius = barCornerRadius,
+            trackColor = barTrackColor,
+            indicatorColor = barIndicatorColor
         )
         addView(progressBar)
         progressBar.updateLayoutParams<LayoutParams> { weight = 1f }
@@ -98,8 +115,11 @@ class StoryTabLayout @JvmOverloads constructor(
         (getChildAt(currentPage) as? AutomaticProgressBar)?.state = PAUSED
     }
 
-    override fun stop() {
-        TODO("Not yet implemented")
+    override fun stop(fillAllBars: Boolean) {
+        children.map { it as? AutomaticProgressBar? }.forEach {
+            it?.state = if (fillAllBars) FILLED else UNFILLED
+        }
+        currentPage = 0
     }
 
     override fun restartCurrentTab() {
@@ -134,9 +154,33 @@ class StoryTabLayout @JvmOverloads constructor(
         }
     }
 
-    private fun setLayoutBarSpacing() {
+    private fun updateLayoutBarSpacing() {
         dividerDrawable = Divider(sizeInDp = barSpacing)
         showDividers = SHOW_DIVIDER_MIDDLE
+    }
+
+    private fun updateBarCornerRadius() {
+        children.map { it as? AutomaticProgressBar? }.forEach {
+            it?.setCornerRadius(barCornerRadius)
+        }
+    }
+
+    private fun updateBarDuration() {
+        children.map { it as? AutomaticProgressBar? }.forEach {
+            it?.setDuration(barDuration)
+        }
+    }
+
+    private fun updateBarTrackColor() {
+        children.map { it as? AutomaticProgressBar? }.forEach {
+            it?.setBarTrackColor(barTrackColor)
+        }
+    }
+
+    private fun updateBarIndicatorColor() {
+        children.map { it as? AutomaticProgressBar? }.forEach {
+            it?.setBarIndicatorColor(barIndicatorColor)
+        }
     }
 
     // endregion

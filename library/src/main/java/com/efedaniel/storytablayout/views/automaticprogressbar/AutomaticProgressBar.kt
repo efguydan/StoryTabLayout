@@ -15,6 +15,7 @@ import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgress
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.STARTED
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.UNFILLED
 import com.google.android.material.progressindicator.LinearProgressIndicator
+import kotlin.time.toDuration
 
 internal class AutomaticProgressBar @JvmOverloads constructor(
     context: Context,
@@ -26,6 +27,10 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
     @ColorRes private val trackColor: Int? = null,
     @ColorRes private val indicatorColor: Int? = null
 ) : FrameLayout(context, attrs, defStyleAttr), ValueAnimator.AnimatorUpdateListener {
+
+    private companion object {
+        const val ANIMATOR_MAX_VALUE = 1000
+    }
 
     private val progressBar = LinearProgressIndicator(context, attrs, defStyleAttr)
 
@@ -42,7 +47,7 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
         }
 
     private val animator by lazy {
-        ValueAnimator.ofInt(0, totalDuration)
+        ValueAnimator.ofInt(0, ANIMATOR_MAX_VALUE)
     }
 
     init {
@@ -52,9 +57,9 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
 
     private fun setupProgressBar() {
         progressBar.max = totalDuration
-        progressBar.trackCornerRadius = cornerRadius.dpToPixels()
-        trackColor?.let { progressBar.trackColor = ContextCompat.getColor(context, it) }
-        indicatorColor?.let { progressBar.setIndicatorColor(ContextCompat.getColor(context, it))}
+        setCornerRadius(cornerRadius)
+        setBarTrackColor(trackColor)
+        setBarIndicatorColor(indicatorColor)
         addView(progressBar)
     }
 
@@ -67,8 +72,9 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
     }
 
     override fun onAnimationUpdate(animation: ValueAnimator) {
-        (animation.animatedValue as? Int?)?.let {
-            progressBar.progress = it
+        (animation.animatedValue as? Int?)?.let { progress ->
+            val duration = progressBar.max * progress / ANIMATOR_MAX_VALUE
+            progressBar.progress = duration
         }
     }
 
@@ -93,5 +99,22 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
     private fun fillProgressBar() {
         animator.cancel()
         progressBar.progress = progressBar.max
+    }
+
+    fun setCornerRadius(cornerRadius: Int) {
+        progressBar.trackCornerRadius = cornerRadius.dpToPixels()
+    }
+
+    fun setDuration(duration: Int) {
+        progressBar.max = duration
+        animator.duration = duration.toLong()
+    }
+
+    fun setBarTrackColor(barTrackColor: Int?) {
+        barTrackColor?.let { progressBar.trackColor = ContextCompat.getColor(context, it) }
+    }
+
+    fun setBarIndicatorColor(barIndicatorColor: Int?) {
+        barIndicatorColor?.let { progressBar.setIndicatorColor(ContextCompat.getColor(context, it))}
     }
 }
