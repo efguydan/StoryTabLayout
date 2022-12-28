@@ -10,6 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StoryTabLayout">
         <activity
+            android:name=".viewpager.ViewPagerSampleActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".viewpager2.ViewPager2SampleActivity"
             android:exported="false" />
         <activity

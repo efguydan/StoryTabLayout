@@ -107,7 +107,9 @@ class StoryTabLayout @JvmOverloads constructor(
         )
         progressBar.animateSnaps = animateBarSnaps
         addView(progressBar)
-        progressBar.updateLayoutParams<LayoutParams> { weight = 1f }
+        progressBar.updateLayoutParams<LayoutParams> {
+            weight = 1f
+        }
     }
 
     // endregion
