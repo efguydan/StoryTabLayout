@@ -7,6 +7,7 @@ import androidx.annotation.ColorInt
 import androidx.core.view.children
 import androidx.core.view.updateLayoutParams
 import com.efedaniel.storytablayout.controls.STLControls
+import com.efedaniel.storytablayout.listener.StoryTabLayoutListener
 import com.efedaniel.storytablayout.setup.STLSetup
 import com.efedaniel.storytablayout.setup.setuptype.SetupType
 import com.efedaniel.storytablayout.utils.Defaults
@@ -69,6 +70,8 @@ class StoryTabLayout @JvmOverloads constructor(
 
     private var currentPage = 0
 
+    private var listener: StoryTabLayoutListener? = null
+
     // endregion
 
     // region Init
@@ -110,6 +113,10 @@ class StoryTabLayout @JvmOverloads constructor(
         progressBar.updateLayoutParams<LayoutParams> {
             weight = 1f
         }
+    }
+
+    fun addListener(listener: StoryTabLayoutListener) {
+        this.listener = listener
     }
 
     // endregion
@@ -160,6 +167,7 @@ class StoryTabLayout @JvmOverloads constructor(
 
     private fun onNewPageSelected(newPage: Int) {
         currentPage = newPage
+        listener?.onNewPage(newPage)
         children.map { it as? AutomaticProgressBar? }.forEachIndexed { i, bar ->
             when(i) {
                 in 0 until currentPage -> bar?.state = FILLED
