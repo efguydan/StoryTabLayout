@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
 import androidx.core.view.children
 import androidx.core.view.updateLayoutParams
 import com.efedaniel.storytablayout.controls.STLControls
@@ -15,6 +14,7 @@ import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgress
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarListener
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.FILLED
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.PAUSED
+import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.RESUMED
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.STARTED
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.UNFILLED
 import com.efedaniel.storytablayout.views.divider.Divider
@@ -115,11 +115,17 @@ class StoryTabLayout @JvmOverloads constructor(
     // region Controls
 
     override fun start() {
-        onNewPageSelected(currentPage)
+        (getChildAt(currentPage) as? AutomaticProgressBar)?.let {
+            if (it.isMoving().not()) onNewPageSelected(currentPage)
+        }
     }
 
     override fun pause() {
         (getChildAt(currentPage) as? AutomaticProgressBar)?.state = PAUSED
+    }
+
+    override fun resume() {
+        (getChildAt(currentPage) as? AutomaticProgressBar)?.state = RESUMED
     }
 
     override fun stop(fillAllBars: Boolean) {
@@ -143,7 +149,7 @@ class StoryTabLayout @JvmOverloads constructor(
     // region Automatic Progress Bar Listener
 
     override fun onBarFilled() {
-        setupType?.onCurrentBarFilled(currentPage + 1)
+        setupType?.onCurrentBarFilled(nextIndex = currentPage + 1)
     }
 
     // endregion

@@ -86,5 +86,15 @@ class ViewPager2SampleActivity : AppCompatActivity() {
                 positiveButton(R.string.select)
             }
         }
+
+        start.setOnClickListener { storyTabLayout.start() }
+
+        pause.setOnClickListener { storyTabLayout.pause() }
+
+        resume.setOnClickListener { storyTabLayout.resume() }
+
+        restartCurrent.setOnClickListener { storyTabLayout.restartCurrentTab() }
+
+        stop.setOnClickListener { storyTabLayout.stop(fillAllBars = true) }
     }
 }

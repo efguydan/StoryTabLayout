@@ -6,6 +6,8 @@ interface STLControls {
 
     fun pause()
 
+    fun resume()
+
     fun stop(fillAllBars: Boolean)
 
     fun restartCurrentTab()

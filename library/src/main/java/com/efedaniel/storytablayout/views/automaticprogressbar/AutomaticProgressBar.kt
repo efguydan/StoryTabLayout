@@ -128,4 +128,6 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
     fun setBarIndicatorColor(@ColorInt barIndicatorColor: Int?) {
         barIndicatorColor?.let { progressBar.setIndicatorColor(it) }
     }
+
+    fun isMoving(): Boolean = state == STARTED || state == RESUMED
 }
