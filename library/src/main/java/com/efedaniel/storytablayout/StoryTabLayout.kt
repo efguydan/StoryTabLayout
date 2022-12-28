@@ -25,7 +25,7 @@ class StoryTabLayout @JvmOverloads constructor(
     defStyleAttr: Int = 0,
 ) : LinearLayout(context, attrs, defStyleAttr), AutomaticProgressBarListener, STLSetup, STLControls {
 
-    // region exposedVariables
+    // region Exposed Variables
 
     var barSpacing: Int = Defaults.TabLayout.BAR_SPACING
         set(value) {

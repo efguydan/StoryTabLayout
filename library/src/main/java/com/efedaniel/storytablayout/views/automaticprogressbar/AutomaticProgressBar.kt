@@ -24,7 +24,7 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
     private val totalDuration: Int,
     private val cornerRadius: Int,
     @ColorInt private val trackColor: Int? = null,
-    @ColorInt private val indicatorColor: Int? = null
+    @ColorInt private val indicatorColor: Int? = null,
 ) : FrameLayout(context, attrs, defStyleAttr), ValueAnimator.AnimatorUpdateListener {
 
     private companion object {
@@ -36,7 +36,7 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
     var state: AutomaticProgressBarState = UNFILLED
         set(value) {
             field = value
-            when(value) {
+            when (value) {
                 UNFILLED -> unFillProgressBar()
                 STARTED -> startProgressBar()
                 PAUSED -> pauseProgressBar()
@@ -74,14 +74,13 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
 
     override fun onAnimationUpdate(animation: ValueAnimator) {
         (animation.animatedValue as? Int?)?.let { progress ->
-            val duration = progressBar.max * progress / ANIMATOR_MAX_VALUE
-            progressBar.progress = duration
+            progressBar.progress = progressBar.max * progress / ANIMATOR_MAX_VALUE
         }
     }
 
     private fun unFillProgressBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            progressBar.setProgress(0, animateSnaps)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && animateSnaps) {
+            progressBar.setProgress(0, true)
         } else {
             progressBar.progress = 0
         }
@@ -103,8 +102,8 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
 
     private fun fillProgressBar() {
         animator.cancel()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            progressBar.setProgress(progressBar.max, animateSnaps)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && animateSnaps) {
+            progressBar.setProgress(progressBar.max, true)
         } else {
             progressBar.progress = progressBar.max
         }
@@ -117,6 +116,9 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
     fun setDuration(duration: Int) {
         progressBar.max = duration
         animator.duration = duration.toLong()
+        if (state == FILLED) {
+            fillProgressBar()
+        }
     }
 
     fun setBarTrackColor(@ColorInt barTrackColor: Int?) {
@@ -124,6 +126,6 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
     }
 
     fun setBarIndicatorColor(@ColorInt barIndicatorColor: Int?) {
-        barIndicatorColor?.let { progressBar.setIndicatorColor(it)}
+        barIndicatorColor?.let { progressBar.setIndicatorColor(it) }
     }
 }
