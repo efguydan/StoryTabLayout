@@ -129,5 +129,9 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
         barIndicatorColor?.let { progressBar.setIndicatorColor(it) }
     }
 
+    fun setBarThickness(size: Int) {
+        progressBar.trackThickness = size
+    }
+
     fun isMoving(): Boolean = state == STARTED || state == RESUMED
 }

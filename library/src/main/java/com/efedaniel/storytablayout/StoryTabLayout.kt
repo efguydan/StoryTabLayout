@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.annotation.ColorInt
 import androidx.core.view.children
+import androidx.core.view.doOnLayout
 import androidx.core.view.updateLayoutParams
 import com.efedaniel.storytablayout.controls.STLControls
 import com.efedaniel.storytablayout.listener.StoryTabLayoutListener
@@ -97,6 +98,10 @@ class StoryTabLayout @JvmOverloads constructor(
     private fun setupProgressBars() {
         removeAllViews()
         repeat(numberOfTabs) { addProgressBar() }
+        doOnLayout {
+            updateBarThickness()
+            updateBarCornerRadius()
+        }
     }
 
     private fun addProgressBar() {
@@ -209,6 +214,12 @@ class StoryTabLayout @JvmOverloads constructor(
     private fun updateBarAnimateSnaps() {
         children.map { it as? AutomaticProgressBar? }.forEach {
             it?.animateSnaps = animateBarSnaps
+        }
+    }
+
+    private fun updateBarThickness() {
+        children.map { it as? AutomaticProgressBar? }.forEach {
+            it?.setBarThickness(height)
         }
     }
     // endregion
