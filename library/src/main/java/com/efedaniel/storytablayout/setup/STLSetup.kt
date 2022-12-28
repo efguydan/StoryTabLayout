@@ -3,6 +3,7 @@ package com.efedaniel.storytablayout.setup
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.efedaniel.storytablayout.setup.setuptype.SetupType
+import com.efedaniel.storytablayout.setup.setuptype.TabNumbersSetupType
 import com.efedaniel.storytablayout.setup.setuptype.ViewPager2SetupType
 import com.efedaniel.storytablayout.setup.setuptype.ViewPagerSetupType
 
@@ -16,5 +17,9 @@ internal interface STLSetup {
 
     fun setupWithViewPager(viewPager: ViewPager) {
         setup(ViewPagerSetupType(viewPager))
+    }
+
+    fun setupWithNumberOfTabs(numberOfTabs: Int) {
+        setup(TabNumbersSetupType(numberOfTabs))
     }
 }

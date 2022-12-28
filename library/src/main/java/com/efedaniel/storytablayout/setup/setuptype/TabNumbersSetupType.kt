@@ -9,6 +9,7 @@ internal class TabNumbersSetupType(
     override fun getNumberOfTabs(): Int  = numberOfTabs
 
     override fun onCurrentBarFilled(nextIndex: Int) {
-        TODO("Not yet implemented")
+        if (nextIndex >= numberOfTabs) return
+        onPageSelected?.invoke(nextIndex)
     }
 }
