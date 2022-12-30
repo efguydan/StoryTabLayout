@@ -7,7 +7,6 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.annotation.ColorInt
 import androidx.core.animation.doOnEnd
-import com.efedaniel.storytablayout.extensions.dpToPixels
 import com.efedaniel.storytablayout.extensions.isFilled
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.FILLED
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.PAUSED
@@ -110,7 +109,7 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
     }
 
     fun setCornerRadius(cornerRadius: Int) {
-        progressBar.trackCornerRadius = cornerRadius.dpToPixels()
+        progressBar.trackCornerRadius = cornerRadius
     }
 
     fun setDuration(duration: Int) {

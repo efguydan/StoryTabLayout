@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="StoryTabLayout">
+        <attr name="barSpacing" format="dimension"/>
+        <attr name="barCornerRadius" format="dimension"/>
+        <attr name="barDurationInMs" format="integer"/>
+        <attr name="barTrackColor" format="color"/>
+        <attr name="barIndicatorColor" format="color"/>
+        <attr name="animateBarSnaps" format="boolean"/>
+    </declare-styleable>
+</resources>

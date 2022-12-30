@@ -7,7 +7,6 @@ import android.graphics.Color.GRAY
 import android.graphics.Color.GREEN
 import android.graphics.Color.MAGENTA
 import android.graphics.Color.RED
-import android.graphics.Color.WHITE
 import android.graphics.Color.YELLOW
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +15,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.color.colorChooser
 import com.efedaniel.storytablayout.sample.R
 import com.efedaniel.storytablayout.sample.databinding.ActivityViewPager2SampleBinding
+import com.efedaniel.storytablayout.sample.exts.dpToPixels
 import com.efedaniel.storytablayout.sample.exts.onValueChanged
 
 class ViewPager2SampleActivity : AppCompatActivity() {
@@ -47,13 +47,13 @@ class ViewPager2SampleActivity : AppCompatActivity() {
         }
 
         spacingSeekbar.progress = 4
-        spacingSeekbar.onValueChanged { storyTabLayout.barSpacing = it }
+        spacingSeekbar.onValueChanged { storyTabLayout.barSpacing = it.dpToPixels() }
 
         cornerRadiusSeekbar.progress = 4
-        cornerRadiusSeekbar.onValueChanged { storyTabLayout.barCornerRadius = it }
+        cornerRadiusSeekbar.onValueChanged { storyTabLayout.barCornerRadius = it.dpToPixels()}
 
         durationSeekbar.progress = 5000
-        durationSeekbar.onValueChanged { storyTabLayout.barDuration = it.coerceAtLeast(500) }
+        durationSeekbar.onValueChanged { storyTabLayout.barDurationInMs = it.coerceAtLeast(500) }
 
         trackColorView.setBackgroundColor(ContextCompat.getColor(this@ViewPager2SampleActivity, R.color.glaucous))
         trackColorView.setOnClickListener {

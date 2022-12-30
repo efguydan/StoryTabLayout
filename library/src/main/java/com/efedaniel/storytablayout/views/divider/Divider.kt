@@ -1,14 +1,13 @@
 package com.efedaniel.storytablayout.views.divider
 
 import android.graphics.drawable.ShapeDrawable
-import com.efedaniel.storytablayout.extensions.dpToPixels
 
 internal class Divider(
-    sizeInDp: Int
+    sizeInPixels: Int
 ): ShapeDrawable() {
 
     init {
-        intrinsicWidth = sizeInDp.dpToPixels()
+        intrinsicWidth = sizeInPixels
         alpha = 0
     }
 }

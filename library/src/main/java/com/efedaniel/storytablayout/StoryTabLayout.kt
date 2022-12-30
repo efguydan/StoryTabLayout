@@ -4,10 +4,14 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.annotation.ColorInt
+import androidx.core.content.res.getColorOrThrow
+import androidx.core.content.res.getDimensionOrThrow
+import androidx.core.content.withStyledAttributes
 import androidx.core.view.children
 import androidx.core.view.doOnLayout
 import androidx.core.view.updateLayoutParams
 import com.efedaniel.storytablayout.controls.STLControls
+import com.efedaniel.storytablayout.extensions.dpToPixels
 import com.efedaniel.storytablayout.listener.StoryTabLayoutListener
 import com.efedaniel.storytablayout.setup.STLSetup
 import com.efedaniel.storytablayout.setup.setuptype.SetupType
@@ -20,26 +24,27 @@ import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgress
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.STARTED
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarState.UNFILLED
 import com.efedaniel.storytablayout.views.divider.Divider
+import kotlin.math.roundToInt
 
 class StoryTabLayout @JvmOverloads constructor(
     context: Context,
-    attrs: AttributeSet? = null,
+    private val attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
 ) : LinearLayout(context, attrs, defStyleAttr), AutomaticProgressBarListener, STLSetup, STLControls {
 
     // region Exposed Variables
 
-    var barSpacing: Int = Defaults.TabLayout.BAR_SPACING
+    var barSpacing: Int = Defaults.TabLayout.BAR_SPACING.dpToPixels()
         set(value) {
             field = value
             updateLayoutBarSpacing()
         }
-    var barCornerRadius: Int = Defaults.Bar.CORNER_RADIUS
+    var barCornerRadius: Int = Defaults.Bar.CORNER_RADIUS.dpToPixels()
         set(value) {
             field = value
             updateBarCornerRadius()
         }
-    var barDuration: Int = Defaults.Bar.DURATION
+    var barDurationInMs: Int = Defaults.Bar.DURATION
         set(value) {
             field = value
             updateBarDuration()
@@ -79,10 +84,35 @@ class StoryTabLayout @JvmOverloads constructor(
 
     init {
         setupLayout()
+        getStyleableProperties()
     }
 
     private fun setupLayout() {
         updateLayoutBarSpacing()
+    }
+
+    private fun getStyleableProperties() {
+        context.withStyledAttributes(attrs, R.styleable.StoryTabLayout) {
+            if (hasValue(R.styleable.StoryTabLayout_barSpacing)) {
+                barSpacing = getDimensionOrThrow(R.styleable.StoryTabLayout_barSpacing).roundToInt()
+            }
+
+            if (hasValue(R.styleable.StoryTabLayout_barCornerRadius)) {
+                barCornerRadius = getDimensionOrThrow(R.styleable.StoryTabLayout_barCornerRadius).roundToInt()
+            }
+
+            barDurationInMs = getInt(R.styleable.StoryTabLayout_barDurationInMs, barDurationInMs)
+
+            if (hasValue(R.styleable.StoryTabLayout_barTrackColor)) {
+                barTrackColor = getColorOrThrow(R.styleable.StoryTabLayout_barTrackColor)
+            }
+
+            if (hasValue(R.styleable.StoryTabLayout_barIndicatorColor)) {
+                barIndicatorColor = getColorOrThrow(R.styleable.StoryTabLayout_barIndicatorColor)
+            }
+
+            animateBarSnaps = getBoolean(R.styleable.StoryTabLayout_animateBarSnaps, false)
+        }
     }
 
     // endregion
@@ -108,7 +138,7 @@ class StoryTabLayout @JvmOverloads constructor(
         val progressBar = AutomaticProgressBar(
             context = context,
             listener = this,
-            totalDuration = barDuration,
+            totalDuration = barDurationInMs,
             cornerRadius = barCornerRadius,
             trackColor = barTrackColor,
             indicatorColor = barIndicatorColor
@@ -183,7 +213,7 @@ class StoryTabLayout @JvmOverloads constructor(
     }
 
     private fun updateLayoutBarSpacing() {
-        dividerDrawable = Divider(sizeInDp = barSpacing)
+        dividerDrawable = Divider(sizeInPixels = barSpacing)
         showDividers = SHOW_DIVIDER_MIDDLE
     }
 
@@ -195,7 +225,7 @@ class StoryTabLayout @JvmOverloads constructor(
 
     private fun updateBarDuration() {
         children.map { it as? AutomaticProgressBar? }.forEach {
-            it?.setDuration(barDuration)
+            it?.setDuration(barDurationInMs)
         }
     }
 
