@@ -15,7 +15,7 @@
  */
 package com.efedaniel.storytablayout.controls
 
-interface STLControls {
+internal interface STLControls {
 
     fun start()
 

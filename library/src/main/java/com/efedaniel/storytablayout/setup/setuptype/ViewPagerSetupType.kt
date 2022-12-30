@@ -18,8 +18,7 @@ package com.efedaniel.storytablayout.setup.setuptype
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 
-internal class ViewPagerSetupType(private val viewPager: ViewPager) :
-    SetupType, OnPageChangeListener {
+internal class ViewPagerSetupType(private val viewPager: ViewPager) : SetupType, OnPageChangeListener {
 
     init {
         viewPager.addOnPageChangeListener(this)

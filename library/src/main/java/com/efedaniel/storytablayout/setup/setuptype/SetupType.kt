@@ -15,7 +15,7 @@
  */
 package com.efedaniel.storytablayout.setup.setuptype
 
-interface SetupType {
+internal interface SetupType {
 
     var onPageSelected: ((Int) -> Unit)?
 

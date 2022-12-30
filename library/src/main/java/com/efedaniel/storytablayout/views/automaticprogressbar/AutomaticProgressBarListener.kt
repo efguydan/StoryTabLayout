@@ -15,7 +15,7 @@
  */
 package com.efedaniel.storytablayout.views.automaticprogressbar
 
-interface AutomaticProgressBarListener {
+internal interface AutomaticProgressBarListener {
 
     fun onBarFilled()
 }
