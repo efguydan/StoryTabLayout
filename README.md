@@ -4,7 +4,7 @@ Provides a story-like Tab Layout for your ViewPager or other Use Cases
 
 ## Preview
 
-<img src="./showcase/sample.mp4" />
+<img src="./showcase/sample.gif" width=300 />
 
 ## Gradle Dependency
 
