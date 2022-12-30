@@ -15,7 +15,6 @@ spotless {
     }
     kotlin {
         target "**/*.kt"
-        ktfmt()
         ktlint()
         licenseHeaderFile '../spotless.license.kt'
     }

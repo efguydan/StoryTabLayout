@@ -44,7 +44,7 @@ import kotlin.math.roundToInt
 class StoryTabLayout @JvmOverloads constructor(
     context: Context,
     private val attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0,
+    defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr), AutomaticProgressBarListener, STLSetup, STLControls {
 
     // region Exposed Variables
@@ -156,13 +156,13 @@ class StoryTabLayout @JvmOverloads constructor(
 
     private fun addProgressBar() {
         val progressBar = AutomaticProgressBar(
-                context = context,
-                listener = this,
-                totalDuration = barDurationInMs,
-                cornerRadius = barCornerRadius,
-                trackColor = barTrackColor,
-                indicatorColor = barIndicatorColor
-            )
+            context = context,
+            listener = this,
+            totalDuration = barDurationInMs,
+            cornerRadius = barCornerRadius,
+            trackColor = barTrackColor,
+            indicatorColor = barIndicatorColor
+        )
         progressBar.animateSnaps = animateBarSnaps
         addView(progressBar)
         progressBar.updateLayoutParams<LayoutParams> { weight = 1f }
