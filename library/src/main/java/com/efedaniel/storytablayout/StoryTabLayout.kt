@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2022 EfeDaniel.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.efedaniel.storytablayout
 
 import android.content.Context
@@ -49,12 +64,16 @@ class StoryTabLayout @JvmOverloads constructor(
             field = value
             updateBarDuration()
         }
-    @ColorInt var barTrackColor: Int? = null
+
+    @ColorInt
+    var barTrackColor: Int? = null
         set(value) {
             field = value
             updateBarTrackColor()
         }
-    @ColorInt var barIndicatorColor: Int? = null
+
+    @ColorInt
+    var barIndicatorColor: Int? = null
         set(value) {
             field = value
             updateBarIndicatorColor()
@@ -98,7 +117,8 @@ class StoryTabLayout @JvmOverloads constructor(
             }
 
             if (hasValue(R.styleable.StoryTabLayout_barCornerRadius)) {
-                barCornerRadius = getDimensionOrThrow(R.styleable.StoryTabLayout_barCornerRadius).roundToInt()
+                barCornerRadius =
+                    getDimensionOrThrow(R.styleable.StoryTabLayout_barCornerRadius).roundToInt()
             }
 
             barDurationInMs = getInt(R.styleable.StoryTabLayout_barDurationInMs, barDurationInMs)
@@ -136,18 +156,16 @@ class StoryTabLayout @JvmOverloads constructor(
 
     private fun addProgressBar() {
         val progressBar = AutomaticProgressBar(
-            context = context,
-            listener = this,
-            totalDuration = barDurationInMs,
-            cornerRadius = barCornerRadius,
-            trackColor = barTrackColor,
-            indicatorColor = barIndicatorColor
-        )
+                context = context,
+                listener = this,
+                totalDuration = barDurationInMs,
+                cornerRadius = barCornerRadius,
+                trackColor = barTrackColor,
+                indicatorColor = barIndicatorColor
+            )
         progressBar.animateSnaps = animateBarSnaps
         addView(progressBar)
-        progressBar.updateLayoutParams<LayoutParams> {
-            weight = 1f
-        }
+        progressBar.updateLayoutParams<LayoutParams> { weight = 1f }
     }
 
     fun addListener(listener: StoryTabLayoutListener) {
@@ -173,9 +191,9 @@ class StoryTabLayout @JvmOverloads constructor(
     }
 
     override fun stop(fillAllBars: Boolean) {
-        children.map { it as? AutomaticProgressBar? }.forEach {
-            it?.state = if (fillAllBars) FILLED else UNFILLED
-        }
+        children
+            .map { it as? AutomaticProgressBar? }
+            .forEach { it?.state = if (fillAllBars) FILLED else UNFILLED }
         currentPage = 0
     }
 
@@ -203,13 +221,15 @@ class StoryTabLayout @JvmOverloads constructor(
     private fun onNewPageSelected(newPage: Int) {
         currentPage = newPage
         listener?.onNewPage(newPage)
-        children.map { it as? AutomaticProgressBar? }.forEachIndexed { i, bar ->
-            when(i) {
-                in 0 until currentPage -> bar?.state = FILLED
-                currentPage -> bar?.state = STARTED
-                else -> bar?.state = UNFILLED
+        children
+            .map { it as? AutomaticProgressBar? }
+            .forEachIndexed { i, bar ->
+                when (i) {
+                    in 0 until currentPage -> bar?.state = FILLED
+                    currentPage -> bar?.state = STARTED
+                    else -> bar?.state = UNFILLED
+                }
             }
-        }
     }
 
     private fun updateLayoutBarSpacing() {
@@ -218,39 +238,29 @@ class StoryTabLayout @JvmOverloads constructor(
     }
 
     private fun updateBarCornerRadius() {
-        children.map { it as? AutomaticProgressBar? }.forEach {
-            it?.setCornerRadius(barCornerRadius)
-        }
+        children.map { it as? AutomaticProgressBar? }.forEach { it?.setCornerRadius(barCornerRadius) }
     }
 
     private fun updateBarDuration() {
-        children.map { it as? AutomaticProgressBar? }.forEach {
-            it?.setDuration(barDurationInMs)
-        }
+        children.map { it as? AutomaticProgressBar? }.forEach { it?.setDuration(barDurationInMs) }
     }
 
     private fun updateBarTrackColor() {
-        children.map { it as? AutomaticProgressBar? }.forEach {
-            it?.setBarTrackColor(barTrackColor)
-        }
+        children.map { it as? AutomaticProgressBar? }.forEach { it?.setBarTrackColor(barTrackColor) }
     }
 
     private fun updateBarIndicatorColor() {
-        children.map { it as? AutomaticProgressBar? }.forEach {
-            it?.setBarIndicatorColor(barIndicatorColor)
-        }
+        children
+            .map { it as? AutomaticProgressBar? }
+            .forEach { it?.setBarIndicatorColor(barIndicatorColor) }
     }
 
     private fun updateBarAnimateSnaps() {
-        children.map { it as? AutomaticProgressBar? }.forEach {
-            it?.animateSnaps = animateBarSnaps
-        }
+        children.map { it as? AutomaticProgressBar? }.forEach { it?.animateSnaps = animateBarSnaps }
     }
 
     private fun updateBarThickness() {
-        children.map { it as? AutomaticProgressBar? }.forEach {
-            it?.setBarThickness(height)
-        }
+        children.map { it as? AutomaticProgressBar? }.forEach { it?.setBarThickness(height) }
     }
     // endregion
 }

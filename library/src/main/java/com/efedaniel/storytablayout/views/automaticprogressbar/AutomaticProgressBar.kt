@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2022 EfeDaniel.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.efedaniel.storytablayout.views.automaticprogressbar
 
 import android.animation.ValueAnimator
@@ -23,7 +38,7 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
     private val totalDuration: Int,
     private val cornerRadius: Int,
     @ColorInt private val trackColor: Int? = null,
-    @ColorInt private val indicatorColor: Int? = null,
+    @ColorInt private val indicatorColor: Int? = null
 ) : FrameLayout(context, attrs, defStyleAttr), ValueAnimator.AnimatorUpdateListener {
 
     private companion object {
@@ -46,9 +61,7 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
 
     var animateSnaps: Boolean = false
 
-    private val animator by lazy {
-        ValueAnimator.ofInt(0, ANIMATOR_MAX_VALUE)
-    }
+    private val animator by lazy { ValueAnimator.ofInt(0, ANIMATOR_MAX_VALUE) }
 
     init {
         setupProgressBar()
@@ -66,9 +79,7 @@ internal class AutomaticProgressBar @JvmOverloads constructor(
     private fun setupAnimator() {
         animator.duration = totalDuration.toLong()
         animator.addUpdateListener(this)
-        animator.doOnEnd {
-            if (progressBar.isFilled()) listener?.onBarFilled()
-        }
+        animator.doOnEnd { if (progressBar.isFilled()) listener?.onBarFilled() }
     }
 
     override fun onAnimationUpdate(animation: ValueAnimator) {

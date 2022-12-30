@@ -1,0 +1,22 @@
+spotless {
+    format 'misc', {
+        target '*.gradle', '*.md', '.gitignore'
+
+        trimTrailingWhitespace()
+        indentWithTabs()
+        endWithNewline()
+    }
+    java {
+        target "**/*.java"
+        trimTrailingWhitespace()
+        removeUnusedImports()
+        googleJavaFormat()
+        endWithNewline()
+    }
+    kotlin {
+        target "**/*.kt"
+        ktfmt()
+        ktlint()
+        licenseHeaderFile '../spotless.license.kt'
+    }
+}

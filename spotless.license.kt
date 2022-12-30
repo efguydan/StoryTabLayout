@@ -13,16 +13,3 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.efedaniel.storytablayout.setup.setuptype
-
-internal class TabNumbersSetupType(private val numberOfTabs: Int) : SetupType {
-
-    override var onPageSelected: ((Int) -> Unit)? = null
-
-    override fun getNumberOfTabs(): Int = numberOfTabs
-
-    override fun onCurrentBarFilled(nextIndex: Int) {
-        if (nextIndex >= numberOfTabs) return
-        onPageSelected?.invoke(nextIndex)
-    }
-}
