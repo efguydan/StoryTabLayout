@@ -25,11 +25,16 @@ import androidx.core.content.withStyledAttributes
 import androidx.core.view.children
 import androidx.core.view.doOnLayout
 import androidx.core.view.updateLayoutParams
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.efedaniel.storytablayout.controls.STLControls
 import com.efedaniel.storytablayout.extensions.dpToPixels
 import com.efedaniel.storytablayout.listener.StoryTabLayoutListener
 import com.efedaniel.storytablayout.setup.STLSetup
 import com.efedaniel.storytablayout.setup.setuptype.SetupType
+import com.efedaniel.storytablayout.setup.setuptype.TabNumbersSetupType
+import com.efedaniel.storytablayout.setup.setuptype.ViewPager2SetupType
+import com.efedaniel.storytablayout.setup.setuptype.ViewPagerSetupType
 import com.efedaniel.storytablayout.utils.Defaults
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBar
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarListener
@@ -139,7 +144,19 @@ class StoryTabLayout @JvmOverloads constructor(
 
     // region Setup
 
-    override fun setup(type: SetupType) {
+    override fun setupWithViewPager2(viewPager2: ViewPager2) {
+        setup(ViewPager2SetupType(viewPager2))
+    }
+
+    override fun setupWithViewPager(viewPager: ViewPager) {
+        setup(ViewPagerSetupType(viewPager))
+    }
+
+    override fun setupWithNumberOfTabs(numberOfTabs: Int) {
+        setup(TabNumbersSetupType(numberOfTabs))
+    }
+
+    private fun setup(type: SetupType) {
         type.onPageSelected = ::onNewPageSelected
         setupType = type
         setupProgressBars()
