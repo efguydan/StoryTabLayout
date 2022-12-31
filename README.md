@@ -1,5 +1,7 @@
 # Story Tab Layout
 
+[![Android CI](https://github.com/efguydan/StoryTabLayout/actions/workflows/android.yml/badge.svg)](https://github.com/efguydan/StoryTabLayout/actions/workflows/android.yml)
+
 Provides a story-like Tab Layout for your ViewPager or other Use Cases
 
 ## Preview
