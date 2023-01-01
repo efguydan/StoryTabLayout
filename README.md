@@ -1,8 +1,9 @@
 # Story Tab Layout
 
 [![Android CI](https://github.com/efguydan/StoryTabLayout/actions/workflows/android.yml/badge.svg)](https://github.com/efguydan/StoryTabLayout/actions/workflows/android.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.efguydan/StoryTabLayout.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.efguydan%22%20AND%20a:%22StoryTabLayout%22)
 
-Provides a story-like Tab Layout for your ViewPager or other Use Cases
+A library that provides a Story-like Tab Layout for your ViewPager and other usecases
 
 ## Preview
 
