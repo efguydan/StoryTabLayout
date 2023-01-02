@@ -15,14 +15,29 @@
  */
 package com.efedaniel.storytablayout.setup
 
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
+import com.efedaniel.storytablayout.extensions.moveToNextPage
 
-internal interface STLSetup {
+internal class ViewPager2SetupType(private val viewPager2: ViewPager2) :
+    SetupType, ViewPager2.OnPageChangeCallback() {
 
-    fun setupWithViewPager2(viewPager2: ViewPager2)
+    init {
+        viewPager2.registerOnPageChangeCallback(this)
+    }
 
-    fun setupWithViewPager(viewPager: ViewPager)
+    override var onPageSelected: ((Int) -> Unit)? = null
 
-    fun setupWithNumberOfTabs(numberOfTabs: Int)
+    override fun getNumberOfTabs(): Int = viewPager2.adapter?.itemCount ?: 0
+
+    override fun onCurrentBarFilled(nextIndex: Int) {
+        viewPager2.moveToNextPage()
+    }
+
+    override fun getInitialPage(): Int {
+        return viewPager2.currentItem
+    }
+
+    override fun onPageSelected(position: Int) {
+        onPageSelected?.invoke(position)
+    }
 }

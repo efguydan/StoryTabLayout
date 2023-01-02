@@ -13,9 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.efedaniel.storytablayout.setup.setuptype
+package com.efedaniel.storytablayout.setup
 
-internal class TabNumbersSetupType(private val numberOfTabs: Int) : SetupType {
+internal class TabNumbersSetupType(
+    private val numberOfTabs: Int,
+    private val initialPage: Int
+) : SetupType {
 
     override var onPageSelected: ((Int) -> Unit)? = null
 
@@ -25,4 +28,6 @@ internal class TabNumbersSetupType(private val numberOfTabs: Int) : SetupType {
         if (nextIndex >= numberOfTabs) return
         onPageSelected?.invoke(nextIndex)
     }
+
+    override fun getInitialPage(): Int = initialPage
 }

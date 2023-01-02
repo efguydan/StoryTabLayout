@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.efedaniel.storytablayout.setup.setuptype
+package com.efedaniel.storytablayout.setup
 
 internal interface SetupType {
 
@@ -22,4 +22,6 @@ internal interface SetupType {
     fun getNumberOfTabs(): Int
 
     fun onCurrentBarFilled(nextIndex: Int)
+
+    fun getInitialPage(): Int
 }
