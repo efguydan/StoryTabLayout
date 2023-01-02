@@ -41,11 +41,14 @@ fun setupStoryTabLayout() {
   storyTabLayout.setupWithViewPager2(viewPager2)
 
   // Set up with Number of Tabs
-  storyTabLayout.setupWithNumberOfTabs(10)
+  storyTabLayout.setupWithNumberOfTabs(numberOfTabs = 10, initialPage = 5)
 }
 ```
 
-If you are setting up with a ViewPager / ViewPager2, you should make sure your adapter is setup before calling the setup method. 
+>If you are setting up with a ViewPager / ViewPager2, you should make sure your adapter is setup before calling the setup method.
+>
+>If you are setting up with Number of Tabs, the initial Page argument is optional and has a default value of 0.
+
 After that, you just need to call the start method and voila!
 
 ```kotlin
@@ -79,7 +82,7 @@ fun setupStoryTabLayout() {
 
 ```
 /**
- * Copyright (c) 2022 EfeDaniel.
+ * Copyright (c) 2023 EfeDaniel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
