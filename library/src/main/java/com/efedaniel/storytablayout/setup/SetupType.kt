@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 EfeDaniel.
+ * Copyright (c) 2023 EfeDaniel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,13 @@
  */
 package com.efedaniel.storytablayout.setup
 
-import androidx.viewpager.widget.ViewPager
-import androidx.viewpager2.widget.ViewPager2
+internal interface SetupType {
 
-internal interface STLSetup {
+    var onPageSelected: ((Int) -> Unit)?
 
-    fun setupWithViewPager2(viewPager2: ViewPager2)
+    fun getNumberOfTabs(): Int
 
-    fun setupWithViewPager(viewPager: ViewPager)
+    fun onCurrentBarFilled(nextIndex: Int)
 
-    fun setupWithNumberOfTabs(numberOfTabs: Int)
+    fun getInitialPage(): Int
 }

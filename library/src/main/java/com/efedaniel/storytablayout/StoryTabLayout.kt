@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 EfeDaniel.
+ * Copyright (c) 2023 EfeDaniel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,11 +30,10 @@ import androidx.viewpager2.widget.ViewPager2
 import com.efedaniel.storytablayout.controls.STLControls
 import com.efedaniel.storytablayout.extensions.dpToPixels
 import com.efedaniel.storytablayout.listener.StoryTabLayoutListener
-import com.efedaniel.storytablayout.setup.STLSetup
-import com.efedaniel.storytablayout.setup.setuptype.SetupType
-import com.efedaniel.storytablayout.setup.setuptype.TabNumbersSetupType
-import com.efedaniel.storytablayout.setup.setuptype.ViewPager2SetupType
-import com.efedaniel.storytablayout.setup.setuptype.ViewPagerSetupType
+import com.efedaniel.storytablayout.setup.SetupType
+import com.efedaniel.storytablayout.setup.TabNumbersSetupType
+import com.efedaniel.storytablayout.setup.ViewPager2SetupType
+import com.efedaniel.storytablayout.setup.ViewPagerSetupType
 import com.efedaniel.storytablayout.utils.Defaults
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBar
 import com.efedaniel.storytablayout.views.automaticprogressbar.AutomaticProgressBarListener
@@ -50,7 +49,7 @@ class StoryTabLayout @JvmOverloads constructor(
     context: Context,
     private val attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr), AutomaticProgressBarListener, STLSetup, STLControls {
+) : LinearLayout(context, attrs, defStyleAttr), AutomaticProgressBarListener, STLControls {
 
     // region Exposed Variables
 
@@ -144,20 +143,21 @@ class StoryTabLayout @JvmOverloads constructor(
 
     // region Setup
 
-    override fun setupWithViewPager2(viewPager2: ViewPager2) {
+    fun setupWithViewPager2(viewPager2: ViewPager2) {
         setup(ViewPager2SetupType(viewPager2))
     }
 
-    override fun setupWithViewPager(viewPager: ViewPager) {
+    fun setupWithViewPager(viewPager: ViewPager) {
         setup(ViewPagerSetupType(viewPager))
     }
 
-    override fun setupWithNumberOfTabs(numberOfTabs: Int) {
-        setup(TabNumbersSetupType(numberOfTabs))
+    fun setupWithNumberOfTabs(numberOfTabs: Int, initialPage: Int = 0) {
+        setup(TabNumbersSetupType(numberOfTabs, initialPage))
     }
 
     private fun setup(type: SetupType) {
         type.onPageSelected = ::onNewPageSelected
+        currentPage = type.getInitialPage()
         setupType = type
         setupProgressBars()
     }

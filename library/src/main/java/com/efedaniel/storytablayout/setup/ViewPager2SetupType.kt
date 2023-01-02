@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022 EfeDaniel.
+ * Copyright (c) 2023 EfeDaniel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,34 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.efedaniel.storytablayout.setup.setuptype
+package com.efedaniel.storytablayout.setup
 
-import androidx.viewpager.widget.ViewPager
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener
+import androidx.viewpager2.widget.ViewPager2
+import com.efedaniel.storytablayout.extensions.moveToNextPage
 
-internal class ViewPagerSetupType(private val viewPager: ViewPager) : SetupType, OnPageChangeListener {
+internal class ViewPager2SetupType(private val viewPager2: ViewPager2) :
+    SetupType, ViewPager2.OnPageChangeCallback() {
 
     init {
-        viewPager.addOnPageChangeListener(this)
+        viewPager2.registerOnPageChangeCallback(this)
     }
 
     override var onPageSelected: ((Int) -> Unit)? = null
 
-    override fun getNumberOfTabs(): Int = viewPager.adapter?.count ?: 0
+    override fun getNumberOfTabs(): Int = viewPager2.adapter?.itemCount ?: 0
 
     override fun onCurrentBarFilled(nextIndex: Int) {
-        viewPager.setCurrentItem(nextIndex, true)
+        viewPager2.moveToNextPage()
     }
 
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-        // Do Nothing
+    override fun getInitialPage(): Int {
+        return viewPager2.currentItem
     }
 
     override fun onPageSelected(position: Int) {
         onPageSelected?.invoke(position)
-    }
-
-    override fun onPageScrollStateChanged(state: Int) {
-        // Do Nothing
     }
 }
